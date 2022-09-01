@@ -24,7 +24,7 @@ Your app is ready to be deployed!
 | Environment          | Description                              | Value                                                       |
 | -------------------- | ---------------------------------------- | ----------------------------------------------------------- |
 | DEBUG_MODE           | Debug level                              | 1                                                           |
-| POSTGRESQL_URL       | Local database connection URL            | postgresql://admin:admin@localhost:5432/\${SERVICE_DB_NAME} |
+| DATABASE_URL       | Local database connection URL              | mysql://admin:admin@localhost:5432/\${SERVICE_DB_NAME} |
 | POSTGRESQL_PORT      | Local database port                      | 5432                                                        |
 | POSTGRESQL_USER      | Local database username                  | admin                                                       |
 | POSTGRESQL_PASSWORD  | Local database password                  | admin                                                       |
