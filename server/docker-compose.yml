@@ -8,7 +8,7 @@ services:
     ports:
       - "${SERVER_PORT}:3000"
     environment:
-      DATABASE_URL: "postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@db:5433"
+      POSTGRESQL_URL: "postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@db:5433"
       BCRYPT_SALT: "${BCRYPT_SALT}"
       JWT_SECRET_KEY: "${JWT_SECRET_KEY}"
       JWT_EXPIRATION: "${JWT_EXPIRATION}"
@@ -22,18 +22,32 @@ services:
     command: npm run db:init
     working_dir: /app/server
     environment:
-      DATABASE_URL: "mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@localhost:3306"
+      POSTGRESQL_URL: "postgres://${POSTGRESQL_USER}:${POSTGRESQL_PASSWORD}@db:5432"
       BCRYPT_SALT: "${BCRYPT_SALT}"
     depends_on:
       db:
         condition: service_healthy
   db:
-    image: mysql:8
-    ports:
-      - 3306:3306
-    volumes:
-      - ~/apps/mysql:/var/lib/mysql
+    image: postgres:12
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      ports: ${POSTGRESQL_PORT}:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-q",
+          "-d",
+          "${POSTGRESQL_DB_NAME}",
+          "-U",
+          "${POSTGRESQL_USER}",
+        ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
 volumes:
   postgres: ~
