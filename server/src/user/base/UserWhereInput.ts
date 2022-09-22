@@ -11,12 +11,26 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { AuthorWhereUniqueInput } from "../../author/base/AuthorWhereUniqueInput";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { RoleListRelationFilter } from "../../role/base/RoleListRelationFilter";
 @InputType()
 class UserWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => AuthorWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => AuthorWhereUniqueInput)
+  @IsOptional()
+  @Field(() => AuthorWhereUniqueInput, {
+    nullable: true,
+  })
+  author?: AuthorWhereUniqueInput;
+
   @ApiProperty({
     required: false,
     type: StringNullableFilter,
@@ -49,6 +63,18 @@ class UserWhereInput {
     nullable: true,
   })
   lastName?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => RoleListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => RoleListRelationFilter)
+  @IsOptional()
+  @Field(() => RoleListRelationFilter, {
+    nullable: true,
+  })
+  roles2?: RoleListRelationFilter;
 
   @ApiProperty({
     required: false,

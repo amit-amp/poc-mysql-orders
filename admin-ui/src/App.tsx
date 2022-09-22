@@ -9,22 +9,26 @@ import { UserList } from "./user/UserList";
 import { UserCreate } from "./user/UserCreate";
 import { UserEdit } from "./user/UserEdit";
 import { UserShow } from "./user/UserShow";
-import { OrderList } from "./order/OrderList";
-import { OrderCreate } from "./order/OrderCreate";
-import { OrderEdit } from "./order/OrderEdit";
-import { OrderShow } from "./order/OrderShow";
-import { CustomerList } from "./customer/CustomerList";
-import { CustomerCreate } from "./customer/CustomerCreate";
-import { CustomerEdit } from "./customer/CustomerEdit";
-import { CustomerShow } from "./customer/CustomerShow";
-import { AddressList } from "./address/AddressList";
-import { AddressCreate } from "./address/AddressCreate";
-import { AddressEdit } from "./address/AddressEdit";
-import { AddressShow } from "./address/AddressShow";
-import { ProductList } from "./product/ProductList";
-import { ProductCreate } from "./product/ProductCreate";
-import { ProductEdit } from "./product/ProductEdit";
-import { ProductShow } from "./product/ProductShow";
+import { BookList } from "./book/BookList";
+import { BookCreate } from "./book/BookCreate";
+import { BookEdit } from "./book/BookEdit";
+import { BookShow } from "./book/BookShow";
+import { AuthorList } from "./author/AuthorList";
+import { AuthorCreate } from "./author/AuthorCreate";
+import { AuthorEdit } from "./author/AuthorEdit";
+import { AuthorShow } from "./author/AuthorShow";
+import { GenreList } from "./genre/GenreList";
+import { GenreCreate } from "./genre/GenreCreate";
+import { GenreEdit } from "./genre/GenreEdit";
+import { GenreShow } from "./genre/GenreShow";
+import { RoleList } from "./role/RoleList";
+import { RoleCreate } from "./role/RoleCreate";
+import { RoleEdit } from "./role/RoleEdit";
+import { RoleShow } from "./role/RoleShow";
+import { TestList } from "./test/TestList";
+import { TestCreate } from "./test/TestCreate";
+import { TestEdit } from "./test/TestEdit";
+import { TestShow } from "./test/TestShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -44,7 +48,7 @@ const App = (): React.ReactElement => {
   return (
     <div className="App">
       <Admin
-        title={"Sample service"}
+        title={"My service"}
         dataProvider={dataProvider}
         authProvider={jwtAuthProvider}
         theme={theme}
@@ -59,32 +63,39 @@ const App = (): React.ReactElement => {
           show={UserShow}
         />
         <Resource
-          name="Order"
-          list={OrderList}
-          edit={OrderEdit}
-          create={OrderCreate}
-          show={OrderShow}
+          name="Book"
+          list={BookList}
+          edit={BookEdit}
+          create={BookCreate}
+          show={BookShow}
         />
         <Resource
-          name="Customer"
-          list={CustomerList}
-          edit={CustomerEdit}
-          create={CustomerCreate}
-          show={CustomerShow}
+          name="Author"
+          list={AuthorList}
+          edit={AuthorEdit}
+          create={AuthorCreate}
+          show={AuthorShow}
         />
         <Resource
-          name="Address"
-          list={AddressList}
-          edit={AddressEdit}
-          create={AddressCreate}
-          show={AddressShow}
+          name="Genre"
+          list={GenreList}
+          edit={GenreEdit}
+          create={GenreCreate}
+          show={GenreShow}
         />
         <Resource
-          name="Product"
-          list={ProductList}
-          edit={ProductEdit}
-          create={ProductCreate}
-          show={ProductShow}
+          name="Role"
+          list={RoleList}
+          edit={RoleEdit}
+          create={RoleCreate}
+          show={RoleShow}
+        />
+        <Resource
+          name="Test"
+          list={TestList}
+          edit={TestEdit}
+          create={TestCreate}
+          show={TestShow}
         />
       </Admin>
     </div>
