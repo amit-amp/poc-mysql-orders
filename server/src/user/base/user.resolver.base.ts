@@ -25,6 +25,9 @@ import { DeleteUserArgs } from "./DeleteUserArgs";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { User } from "./User";
+import { RoleFindManyArgs } from "../../role/base/RoleFindManyArgs";
+import { Role } from "../../role/base/Role";
+import { Author } from "../../author/base/Author";
 import { UserService } from "../user.service";
 
 @graphql.Resolver(() => User)
@@ -90,7 +93,15 @@ export class UserResolverBase {
   async createUser(@graphql.Args() args: CreateUserArgs): Promise<User> {
     return await this.service.create({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        author: args.data.author
+          ? {
+              connect: args.data.author,
+            }
+          : undefined,
+      },
     });
   }
 
@@ -105,7 +116,15 @@ export class UserResolverBase {
     try {
       return await this.service.update({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          author: args.data.author
+            ? {
+                connect: args.data.author,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -134,5 +153,41 @@ export class UserResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Role])
+  @nestAccessControl.UseRoles({
+    resource: "Role",
+    action: "read",
+    possession: "any",
+  })
+  async roles2(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: RoleFindManyArgs
+  ): Promise<Role[]> {
+    const results = await this.service.findRoles2(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => Author, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Author",
+    action: "read",
+    possession: "any",
+  })
+  async author(@graphql.Parent() parent: User): Promise<Author | null> {
+    const result = await this.service.getAuthor(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 }

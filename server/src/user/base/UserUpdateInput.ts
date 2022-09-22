@@ -11,9 +11,26 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional } from "class-validator";
+import { AuthorWhereUniqueInput } from "../../author/base/AuthorWhereUniqueInput";
+import { ValidateNested, IsOptional, IsString, IsJSON } from "class-validator";
+import { Type } from "class-transformer";
+import { GraphQLJSONObject } from "graphql-type-json";
+import { InputJsonValue } from "../../types";
+import { RoleUpdateManyWithoutUsersInput } from "./RoleUpdateManyWithoutUsersInput";
 @InputType()
 class UserUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => AuthorWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => AuthorWhereUniqueInput)
+  @IsOptional()
+  @Field(() => AuthorWhereUniqueInput, {
+    nullable: true,
+  })
+  author?: AuthorWhereUniqueInput | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -49,16 +66,25 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
-    type: [String],
   })
-  @IsString({
-    each: true,
-  })
+  @IsJSON()
   @IsOptional()
-  @Field(() => [String], {
+  @Field(() => GraphQLJSONObject, {
     nullable: true,
   })
-  roles?: Array<string>;
+  roles?: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => RoleUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => RoleUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => RoleUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  roles2?: RoleUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,

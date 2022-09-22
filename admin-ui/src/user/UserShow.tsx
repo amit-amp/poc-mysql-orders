@@ -3,14 +3,19 @@ import {
   Show,
   SimpleShowLayout,
   ShowProps,
-  DateField,
+  ReferenceField,
   TextField,
+  DateField,
 } from "react-admin";
+import { AUTHOR_TITLE_FIELD } from "../author/AuthorTitle";
 
 export const UserShow = (props: ShowProps): React.ReactElement => {
   return (
     <Show {...props}>
       <SimpleShowLayout>
+        <ReferenceField label="Author" source="author.id" reference="Author">
+          <TextField source={AUTHOR_TITLE_FIELD} />
+        </ReferenceField>
         <DateField source="createdAt" label="Created At" />
         <TextField label="First Name" source="firstName" />
         <TextField label="ID" source="id" />

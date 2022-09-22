@@ -10,7 +10,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, User } from "@prisma/client";
+import { Prisma, User, Role, Author } from "@prisma/client";
 import { PasswordService } from "../../auth/password.service";
 import { transformStringFieldUpdateInput } from "../../prisma.util";
 
@@ -70,5 +70,24 @@ export class UserServiceBase {
     args: Prisma.SelectSubset<T, Prisma.UserDeleteArgs>
   ): Promise<User> {
     return this.prisma.user.delete(args);
+  }
+
+  async findRoles2(
+    parentId: string,
+    args: Prisma.RoleFindManyArgs
+  ): Promise<Role[]> {
+    return this.prisma.user
+      .findUnique({
+        where: { id: parentId },
+      })
+      .roles2(args);
+  }
+
+  async getAuthor(parentId: string): Promise<Author | null> {
+    return this.prisma.user
+      .findUnique({
+        where: { id: parentId },
+      })
+      .author();
   }
 }
